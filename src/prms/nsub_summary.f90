@@ -80,7 +80,7 @@
       IF ( control_integer(NsubOutVars, 'nsubOutVars')/=0 ) NsubOutVars = 0
       ! 1 = daily, 2 = monthly, 3 = both, 4 = mean monthly, 5 = mean yearly, 6 = yearly total
       IF ( control_integer(NsubOut_freq, 'nsubOut_freq')/=0 ) NsubOut_freq = 0
-      IF ( control_integer(Prms_warmup, 'prms_warmup')/=0 ) prms_warmup = 0
+      !IF ( control_integer(Prms_warmup, 'prms_warmup')/=0 ) prms_warmup = 0                    ! this is a parameter, ya?  pjt - 20190125
 
       IF ( NsubOutVars==0 ) THEN
         IF ( Model/=99 ) THEN
@@ -121,6 +121,10 @@
       INTEGER :: ios, ierr, size, dum, jj, j, i, k
       CHARACTER(LEN=MAXFILE_LENGTH) :: fileName
 !***********************************************************************
+      
+      !Read the prms_warmup param on init (not a control var in 1.2.2)   PJT 20190125
+      IF ( getparam(MODNAME, 'prms_warmup', 1, 'integer', Prms_warmup)/=0 ) CALL read_error(2, 'prms_warmup')
+       
       Begin_results = 1
       Begyr = Start_year
       IF ( Prms_warmup>0 ) Begin_results = 0
